@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>圆柱体和圆台</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script src="../js/three.js"></script>
+<script>
+    var scene=new THREE.Scene();//创建场景
+    var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,1000);//创建照相机
+    camera.position.set(5,5,5);//设置相机位置
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);//场景中增加相机
+
+/*  //顶面半径和底面半径，高，纬度份数，经度份数，是否有哦顶面和底面,开始渲染半径，结束渲染半径
+    var cylider=new THREE.CylinderGeometry(2,2,4,6,8,false,Math.PI/6,Math.PI/2);//这个可以构造长方体6面体等多面体
+    var material=new THREE.MeshBasicMaterial({color:0x00BFFF,wireframe:true});
+    var cube=new THREE.Mesh(cylider,material);
+    scene.add(cube);*/
+
+/*  //较为标准的圆柱体
+    var cylider=new THREE.CylinderGeometry(2,2,4,18,3);//这个可以构造长方体6面体等多面体
+    var material=new THREE.MeshBasicMaterial({color:0x00BFFF,wireframe:true});
+    var cube=new THREE.Mesh(cylider,material);
+    scene.add(cube);*/
+
+
+    //圆台
+    var cylider=new THREE.CylinderGeometry(2,5,4,6,8,false);//这个可以构造长方体6面体等多面体
+    var material=new THREE.MeshBasicMaterial({color:0x00BFFF,wireframe:true});
+    var cube=new THREE.Mesh(cylider,material);
+    scene.add(cube);
+    //渲染
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    renderer.render(scene,camera);
+
+</script>
+</html>

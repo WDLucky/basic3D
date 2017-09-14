@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>正方体参数了解</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script src="../js/three.js"></script>
+<script>
+    var scene=new THREE.Scene();//创建场景
+    var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,1000);//创建照相机
+    camera.position.set(5,5,5);//设置相机位置
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);//场景中增加相机
+
+  /*  //创建一个3*3个小正方体组成的一个大正方体
+    //var geometry=new THREE.BoxGeometry(3,3,3,3,3,3);//x长度，y的长度,z的长度,x上的份数,y上的份数,z上的份数
+    var geometry=new THREE.PlaneGeometry(2,5,2,5);//创建一个参数化长方形
+    var material=new THREE.MeshBasicMaterial({color:0x00BFFF,wireframe:true});
+    var cube=new THREE.Mesh(geometry,material);
+    scene.add(cube);*/
+
+  //创建球体参数意义分别是半径，经度份数，纬度份数，开始经度，跨过经度，开始纬度，跨过纬度
+   // var sphere=new THREE.SphereGeometry(2,8,8,Math.PI/2,Math.PI/6,Math.PI/2,Math.PI/3);
+    var circle=new THREE.CircleGeometry(3,9,Math.PI/6,2*Math.PI/3);
+    var material=new THREE.MeshBasicMaterial({color:0x00BFFF,wireframe:true});
+    var cube=new THREE.Mesh(circle,material);
+    scene.add(cube);
+
+    //渲染
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    renderer.render(scene,camera);
+</script>
+</html>

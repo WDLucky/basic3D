@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>材质贴图</title>
+</head>
+<body>
+
+</body>
+<script src="../js/three.js"></script>
+<script>
+    //创建场景
+    var scene=new THREE.Scene();
+    //创建照相机并且设置好相机位置增加到场景中
+    var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,10000);
+    camera.position.set(2,4,5);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);
+
+    //增加一个正方形几何体
+    var geometry=new THREE.CubeGeometry(1,1,1);
+    var metarial=new THREE.MeshBasicMaterial({
+        map:texture
+     });
+    var cube=new THREE.Mesh(geometry,metarial);
+    var texture=THREE.ImageUtils.loadTexture('../img/0.png',{},function () {
+        renderer.render(scene,camera);
+    });
+    scene.add(cube);
+    //开始渲染
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);//创建canvas对象放在body里面
+    renderer.render(scene,camera);;
+</script>
+</html>

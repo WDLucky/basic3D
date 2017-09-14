@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>光照材质：球面镜面反射</title>
+</head>
+<body>
+</body>
+<script src="../js/three.js"></script>
+<script>
+    //创建场景
+    var scene=new THREE.Scene();
+    //创建照相机并且设置好相机位置增加到场景中
+    var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,10000);
+    camera.position.set(2,4,25);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);
+    //增加一个球体
+    var geometry=new THREE.SphereGeometry(3,20,8)
+    var metarial=new THREE.MeshPhongMaterial({color:0xFF0000});//红色
+    var cube=new THREE.Mesh(geometry,metarial);
+    scene.add(cube);
+    var light=new THREE.AmbientLight(0xFF00FF);//深蓝色
+    scene.add(light);
+    //开始渲染
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);//创建canvas对象放在body里面
+    renderer.render(scene,camera);
+</script>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>控制球滚动</title>
+<style>
+    body{
+        margin: 0;
+        overflow:hidden ;
+    }
+</style>
+</head>
+<body>
+</body>
+<script type="text/javascript" src="../js/dat.gui.min.js"></script>
+<script type="text/javascript" src="../js/three.js"></script>
+<script src="../js/stats.min.js"></script>
+<script type="text/javascript">
+    //浏览器自适应窗口大小
+    window.addEventListener('resize',onResize,false);//注册一个窗口监听事件
+    function onResize(){
+        camera.aspect=window.innerWidth/window.innerHeight;
+        camera.updateProjectionMatrix();//如果不写就会发生相机观看物体变形的事情
+        renderer.setSize(window.innerWidth, window.innerHeight)
+    }
+
+
+
+    //创建场景
+    var scene=new THREE.Scene();
+    //创建照相机并且设置好相机位置增加到场景中
+    var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,10000);
+    camera.position.set(0,0,50);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);
+    //增加一个球体
+    var geometry=new THREE.SphereGeometry(3,10,10);
+    var metarial=new THREE.MeshPhongMaterial({color:0xFF00ff,wireframe:true});
+    var cube=new THREE.Mesh(geometry,metarial);
+    cube.position.set(0,0,0);
+    scene.add(cube);
+    var light=new THREE.AmbientLight(0xFF00FF);//深蓝色
+    scene.add(light);
+    //开始渲染
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);//创建canvas对象放在body里面
+
+   //引入fps检测设置他的位置
+    var stats=new Stats();
+    stats.domElement.style.position="absolute";
+    stats.domElement.style.left="0px";
+    stats.domElement.style.top="0px";
+    document.body.appendChild(stats.domElement);
+
+
+
+
+    //设置控制对象速度属性
+    var controls=new function () {
+        this.rotationSpeed=0.02;//立方体自己旋转速度
+        this.bouncingSpeed=0.03;//立方体自己弹跳速度
+    }
+
+    //引入gui
+    var gui=new dat.GUI();
+    gui.add(controls,'rotationSpeed',0,0.9);
+    gui.add(controls,'bouncingSpeed',0,0.9);
+    ren();
+
+
+
+
+    //设置弹跳距离s
+    var step = 0;
+    function ren() {
+        stats.begin();
+        renderer.render(scene,camera);
+        cube.rotation.x-=controls.rotationSpeed;
+        step=step+controls.bouncingSpeed;
+        cube.position.x=10+(5*(Math.cos(step)));
+        cube.position.y=1+(10*(Math.sin(step)));
+       // cube.position.y=1+(10*(Math.abs(Math.sin(step))));
+        requestAnimationFrame(ren);
+        stats.end();
+    }
+</script>
+</html>

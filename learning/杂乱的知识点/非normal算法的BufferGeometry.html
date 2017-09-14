@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>非norml</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script src="../js/three.js"></script>
+<script>
+    var scene=new THREE.Scene();//设置场景
+    var camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,1,1000); //设置相机
+    camera.position.set(9,9,8);//设置相机的位置
+    camera.lookAt(new THREE.Vector3(0,0,0));//设置相机的视线
+    scene.add(camera);
+
+    var sixmian=new THREE.BufferGeometry();//创建一个6面体
+    var sixpositions=[[0,0,0],[1,0,0],[1,0,1],[0,0,1],[0,1,0],[1,1,0],[1,1,1],[0,1,1]];  //给定顶点y轴在上面
+    var sixfaces =new Float32Array(sixpositions.length*3);//开始解析给定的顶点
+    for(var i=0;i<sixpositions.length;i++){
+        sixfaces[i*3+0]=sixpositions[i][0];
+        sixfaces[i*3+1]=sixpositions[i][1];
+        sixfaces[i*3+2]=sixpositions[i][2];
+    }
+    var indexs=new Uint32Array([0,2,3,2,0,1,2,5,6,5,2,1,2,7,3,7,2,6,0,7,4,7,0,3,0,5,1,5,0,4,4,6,5,6,4,7]); //根据索引绘制三角形平面
+    sixmian.addAttribute('position',new THREE.BufferAttribute(sixfaces,3));//6面体对象获取点坐标
+    sixmian.setIndex(new THREE.BufferAttribute(indexs,1));//根据索引绘制平面
+    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});   //创建几何体的材料和外表
+    var cube1=new THREE.Mesh(sixmian,material);
+    scene.add(cube1);
+
+    //创建四面体
+    var fourmian=new THREE.BufferGeometry();
+    var fourpoints=[[2,0,0],[4,0,0],[3,0,Math.sqrt(3)],[3,2*Math.sqrt(6)/3,Math.sqrt(3)/3]];//给顶点y轴在上方的版本
+    var fourfaces=new Float32Array(fourpoints.length*3);
+    for(var i=0;i<fourpoints.length;i++){
+        fourfaces[i*3+0]=fourpoints[i][0];
+        fourfaces[i*3+1]=fourpoints[i][1];
+        fourfaces[i*3+2]=fourpoints[i][2];
+    }
+    var indexf=new Uint32Array([0,1,2,1,3,2,3,0,2,0,3,1]);//根据索引绘制三角形
+    fourmian.addAttribute('position',new THREE.BufferAttribute(fourfaces,3));
+    fourmian.setIndex(new THREE.BufferAttribute(indexf,1))
+    var material2 = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    var cube2=new THREE.Mesh(fourmian,material2);
+    scene.add(cube2);
+    //最后一步渲染
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);//创建canvas
+    renderer.render(scene,camera);
+</script>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>fps</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script src="../js/three.js"></script>
+<script src="../js/stats.min.js"></script>
+<script>
+    var scene=new THREE.Scene();
+    var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,10000);
+    camera.position.set(3,3,3);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);
+
+    var box=new THREE.BoxGeometry(1,1,1,1,1,1);
+    var material=new THREE.MeshBasicMaterial({color:0xff000f});
+    var cube=new THREE.Mesh(box,material);
+    scene.add(cube);
+
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    renderer.render(scene,camera);
+
+    var stats=new Stats();
+    stats.domElement.style.position="absolute";
+    stats.domElement.style.left="0px";
+    stats.domElement.style.top="0px";
+    document.body.appendChild(stats.domElement);
+    ren();
+
+    function ren() {
+        stats.begin();
+        renderer.render(scene,camera);
+        cube.rotation.x-=0.01;
+        requestAnimationFrame(ren);
+        stats.end();
+        }
+
+</script>
+</html>

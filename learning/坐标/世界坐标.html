@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>世界坐标</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script src="../js/three.js"></script>
+<script>
+    var scene=new THREE.Scene();
+    var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,1000);
+    camera.position.set(3,3,20);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);
+
+    //添加世界坐标
+    var axisHelper=new THREE.AxisHelper(4);//表示坐标的长度
+    scene.add(axisHelper);
+
+    var eightfaces=new THREE.OctahedronGeometry(3);//正8面体
+    var material=new THREE.MeshBasicMaterial({color:0x00BFFF,wireframe:true});
+    var cube=new THREE.Mesh(eightfaces,material);
+    scene.add(cube);
+
+    //渲染
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    renderer.render(scene,camera);
+</script>
+</html>
