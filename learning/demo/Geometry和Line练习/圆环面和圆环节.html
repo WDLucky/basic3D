@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>正4面体，正8面体，正20面体</title>
+    <title>圆环面和圆环节</title>
     <style>
         body{
             margin: 0;
@@ -11,24 +11,18 @@
     </style>
 </head>
 <body>
-
-</body>
-<script src="../js/three.js"></script>
+<script src="../../js/three.js"></script>
 <script>
     var scene=new THREE.Scene();
     var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,1000);
-    camera.position.set(3,3,20);
+    camera.position.set(4,4,15);
     camera.lookAt(new THREE.Vector3(0,0,0));
     scene.add(camera);
 
-    var axisHelper=new THREE.AxisHelper(4);
-    scene.add(axisHelper);
-
-    //var fourfaces=new THREE.TetrahedronGeometry(3);    //正4面体
-    var eightfaces=new THREE.OctahedronGeometry(3);//正8面体
-    //var twentyfaces=new THREE.IcosahedronGeometry(3)
-    var material=new THREE.MeshBasicMaterial({color:0x00BFFF,wireframe:true});
-    var cube=new THREE.Mesh(eightfaces,material);
+    //var yuanface=new THREE.TorusGeometry(3,1,18,360,Math.PI*2)//圆环面半径，管道半径,圆的节数（管道越圆滑），整体节数
+    var jieface=new THREE.TorusKnotGeometry(3,1,18,18,7,5,0.5);//圆环半径，管道半径，圆的光滑程度，环节的段数，垂直方向上头数，水平方向缠绕数
+    var material=new THREE.MeshBasicMaterial({color:0x00BFF,wireframe:true});
+    var cube=new THREE.Mesh(jieface,material);
     scene.add(cube);
 
     //渲染
@@ -36,6 +30,6 @@
     renderer.setSize(window.innerWidth,window.innerHeight);
     document.body.appendChild(renderer.domElement);
     renderer.render(scene,camera);
-
 </script>
+</body>
 </html>

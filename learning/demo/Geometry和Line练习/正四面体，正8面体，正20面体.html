@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>世界坐标</title>
+    <title>正4面体，正8面体，正20面体</title>
     <style>
         body{
             margin: 0;
@@ -13,7 +13,7 @@
 <body>
 
 </body>
-<script src="../js/three.js"></script>
+<script src="../../js/three.js"></script>
 <script>
     var scene=new THREE.Scene();
     var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,1000);
@@ -21,11 +21,12 @@
     camera.lookAt(new THREE.Vector3(0,0,0));
     scene.add(camera);
 
-    //添加世界坐标
-    var axisHelper=new THREE.AxisHelper(4);//表示坐标的长度
+    var axisHelper=new THREE.AxisHelper(4);
     scene.add(axisHelper);
 
+    //var fourfaces=new THREE.TetrahedronGeometry(3);    //正4面体
     var eightfaces=new THREE.OctahedronGeometry(3);//正8面体
+    //var twentyfaces=new THREE.IcosahedronGeometry(3)
     var material=new THREE.MeshBasicMaterial({color:0x00BFFF,wireframe:true});
     var cube=new THREE.Mesh(eightfaces,material);
     scene.add(cube);
@@ -35,5 +36,6 @@
     renderer.setSize(window.innerWidth,window.innerHeight);
     document.body.appendChild(renderer.domElement);
     renderer.render(scene,camera);
+
 </script>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>norml算法BufferGeometry</title>
+    <title>非norml</title>
     <style>
         body{
             margin: 0;
@@ -13,11 +13,11 @@
 <body>
 
 </body>
-<script src="../js/three.js"></script>
+<script src="../../js/three.js"></script>
 <script>
     var scene=new THREE.Scene();//设置场景
     var camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,1,1000); //设置相机
-    camera.position.set(0,0,5);//设置相机的位置
+    camera.position.set(9,9,8);//设置相机的位置
     camera.lookAt(new THREE.Vector3(0,0,0));//设置相机的视线
     scene.add(camera);
 
@@ -29,16 +29,8 @@
         sixfaces[i*3+1]=sixpositions[i][1];
         sixfaces[i*3+2]=sixpositions[i][2];
     }
-    var normalsix=[[-0.5,-0.5,-0.5],[0.5,-0.5,-0.5],[0.5,-0.5,0.5],[-0.5,-0.5,0.5],[-0.5,0.5,-0.5],[0.5,-0.5,-0.5],[0.5,0.5,0.5],[-0.5,0.5,0.5]];
-    var normals=new Float32Array(normalsix.length*3);
-    for(var i=0;i<normalsix.length;i++){
-        normals[i*3+0]=normalsix[i][0];
-        normals[i*3+1]=normalsix[i][1];
-        normals[i*3+2]=normalsix[i][2];
-    }
-    var indexs=new Uint32Array([0,2,3,0,2,1,2,5,6,2,5,1,2,7,3,2,7,6,0,7,4,0,7,3,0,5,1,0,5,4,4,6,5,4,6,7]); //根据索引绘制三角形平面
+    var indexs=new Uint32Array([0,2,3,2,0,1,2,5,6,5,2,1,2,7,3,7,2,6,0,7,4,7,0,3,0,5,1,5,0,4,4,6,5,6,4,7]); //根据索引绘制三角形平面
     sixmian.addAttribute('position',new THREE.BufferAttribute(sixfaces,3));//6面体对象获取点坐标
-    sixmian.addAttribute('normal',new THREE.BufferAttribute(normals,3) );
     sixmian.setIndex(new THREE.BufferAttribute(indexs,1));//根据索引绘制平面
     var material = new THREE.MeshBasicMaterial({color: 0x00ff00});   //创建几何体的材料和外表
     var cube1=new THREE.Mesh(sixmian,material);
@@ -56,7 +48,7 @@
     var indexf=new Uint32Array([0,1,2,1,3,2,3,0,2,0,3,1]);//根据索引绘制三角形
     fourmian.addAttribute('position',new THREE.BufferAttribute(fourfaces,3));
     fourmian.setIndex(new THREE.BufferAttribute(indexf,1))
-    var material2 = new THREE.MeshBasicMaterial({color: 0x00ff00,wireframe:true});
+    var material2 = new THREE.MeshBasicMaterial({color: 0x00ff00});
     var cube2=new THREE.Mesh(fourmian,material2);
     scene.add(cube2);
     //最后一步渲染
