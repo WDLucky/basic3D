@@ -18,33 +18,60 @@
 <script type="text/javascript">
     var scene=new THREE.Scene();
     var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,10000);
-    camera.position.set(0,0,10);
+    camera.position.set(0,4,10);
+    camera.lookAt(new THREE.Vector3(0,0,0));
     scene.add(camera);
 
     //创建一个正方体(lambt材质漫反射)和一个圆（phng材质镜反射）
-    var boxgeometry=new THREE.BoxGeometry(2,2,2);
-    var shapgeometry=new THREE.SphereGeometry(3,18,18);
-    var boxmaterial=new THREE.MeshLambertMaterial({color:0x1E90FF,wireframe:true});
-    var shapmaterial=new THREE.MeshPhongMaterial({color:0xFF00FF,wireframe:true});
-    var boxmesh=THREE.Mesh(boxgeometry,boxmaterial);
-    var shapmesh=THREE.Mesh(shapgeometry,shapmaterial);
+    var boxgeometry=new THREE.BoxGeometry(2,2,2,1,1,1);
+    var shapgeometry=new THREE.SphereGeometry(2,18,18);
+    var boxmaterial=new THREE.MeshLambertMaterial({color:0x1E90FF});
+    var shapmaterial=new THREE.MeshPhongMaterial({color:0xFF00FF});
+    var boxmesh= new THREE.Mesh(boxgeometry,boxmaterial);
+    var shapmesh=new THREE.Mesh(shapgeometry,shapmaterial);
+    boxmesh.position.set(-3,0,0);
+    shapmesh.position.set(3,0,0);
     scene.add(boxmesh);
     scene.add(shapmesh);
 
     //增加点光源（不会有阴影）
     var pointcolor="#00FFFF";
     var pointLight=new THREE.PointLight(pointcolor);
-    pointLight.position.set(0,15,0);
+    pointLight.position.set(0,0,0);
     scene.add(pointLight);
 
     var renderer=new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);//创建canvas对象放在body里面
+    renderer.render(scene,camera);
 
+    //设置要控制的对象
+    var controls=new function () {
+        this.positionx=0.01;//控制相机左右位置
+        this.positiony=0.01;//控制相机上下位置
+        this.pointcolor=pointLight.color.getHex();//控制光的颜色
+    }
+
+    //引入gui来控制相机的位置来观察物体
+    var gui=new dat.GUI();
+
+
+
+    //stats检测画面的fps
+    var stats=new Stats();
+    stats.domElement.style.position="absolute";
+    stats.domElement.style.left="0px";
+    stats.domElement.style.top="0px";
+    document.body.appendChild(stats.domElement);
+
+    //自动适应窗口大小
     window.addEventListener('resize',onResize,false);//注册一个窗口监听事件
-    function onResize(){
-        camera.aspect=window.innerWidth/window.innerHeight;
+    function onResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();//如果不写就会发生相机观看物体变形的事情
-        renderer.setSize(window.innerWidth, window.innerHeight)
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+
 </script>
 </html>

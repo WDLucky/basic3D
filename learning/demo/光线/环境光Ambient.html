@@ -66,6 +66,7 @@
     });
     ren();
 
+
     var step=0;
     function ren() {
         stats.begin();
@@ -75,6 +76,7 @@
         cube.position.x=0+(10*(Math.cos(step)));
         cube.position.y=0+(10*(Math.sin(step)));
        // camera.lookAt(cube.position);//加了这个感觉观察的物体就是相对静止了
+        console.log(cube);
         requestAnimationFrame(ren);
         stats.end();
     }
