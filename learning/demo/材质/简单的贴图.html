@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简单的贴图</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script type="text/javascript" src="../../js/three.js"></script>
+<script type="text/javascript">
+     var scene=new THREE.Scene();
+     var camera =new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,10000);
+     camera.position.set(0,5,5);
+     camera.lookAt(new THREE.Vector3(0,0,0));
+     scene.add(camera);
+
+     //先导入纹理
+     var texture=THREE.ImageUtils.loadTexture('../../img/0.png',{},function () {
+         renderer.render(scene,camera);
+     });
+
+     //创建一个立方体
+     var geometry=new THREE.BoxGeometry(3,3,3);//x长度，y的长度,z的长度,x上的份数,y上的份数,z上的份数
+     var material=new THREE.MeshBasicMaterial({map:texture});
+     var cube=new THREE.Mesh(geometry,material);
+     scene.add(cube);
+
+     var renderer=new THREE.WebGLRenderer();
+     renderer.setSize(window.innerWidth,window.innerHeight);
+     document.body.appendChild(renderer.domElement);
+     renderer.render(scene,camera);
+
+
+
+</script>
+</html>

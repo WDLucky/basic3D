@@ -42,8 +42,9 @@
     scene.add(shapmesh);
 
     //创建聚光灯
-    var spotlight=new THREE.SpotLight(0xffffff);
+    var spotlight=new THREE.SpotLight(0xffffff,1,0,Math.PI/3,0,1);
     spotlight.position.set(5,5,-5);
+    spotlight.target=plane;
     spotlight.angle=Math.PI/6;//调整聚光灯的角度
     spotlight.castShadow=true;//告诉聚光灯要开启阴影效果
     spotlight.shadow.mapSize.width = 1024;
