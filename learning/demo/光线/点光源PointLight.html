@@ -18,7 +18,7 @@
 <script type="text/javascript">
     var scene=new THREE.Scene();
     var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,10000);
-    camera.position.set(0,4,10);
+    camera.position.set(0,0,10);
     camera.lookAt(new THREE.Vector3(0,0,0));
     scene.add(camera);
 
@@ -43,7 +43,6 @@
     var renderer=new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);//创建canvas对象放在body里面
-    renderer.render(scene,camera);
 
     //设置要控制的对象
     var controls=new function () {
@@ -54,7 +53,11 @@
 
     //引入gui来控制相机的位置来观察物体
     var gui=new dat.GUI();
-
+    gui.add(controls,'positionx',-5,5);
+    gui.add(controls,'positiony',-5,5);
+    gui.addColor(controls,'pointcolor').onChange(function (e) {
+        pointLight.color.setHex(e);
+    });
 
 
     //stats检测画面的fps
@@ -72,6 +75,23 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
+    ren();
+    //渲染
+    var stepx=0;//控制相机x坐标的位置
+    var stepy=0;//控制相机y坐标的位置
+
+    function ren() {
+        stats.begin();
+        renderer.render(scene,camera);
+        var time = Date.now() * 0.0005;
+        stepx=controls.positionx;//获取gui的值控制x的坐标的值
+        stepy=controls.positiony;//获取gui的值控制y的坐标的值
+        camera.position.x=0+stepx;//修改相机x的位置信息
+        camera.position.y=0+stepy;//修改相机y的位置信息
+        pointLight.position.y=5*Math.sin( time ) * 0.75;
+        requestAnimationFrame(ren);
+        stats.end();
+    }
 
 </script>
 </html>

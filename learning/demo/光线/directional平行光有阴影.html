@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>平行光DirectionalLight</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script src="../../js/three.js" type="text/javascript"></script>
+<script type="text/javascript" src="../../js/dat.gui.js"></script>
+<script type="text/javascript" src="../../js/stats.min.js"></script>
+<script type="text/javascript">
+    var scene=new THREE.Scene();
+    var camera =new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,10000);
+    camera.position.set(0,15,10);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);
+
+    //添加世界坐标
+    var axisHelper=new THREE.AxisHelper(5);//表示坐标的长度
+    scene.add(axisHelper);
+
+    //构建平面接受渲染的阴影效果
+    var planegeometry=new THREE.PlaneGeometry(20,20);
+    var planmaterial=new THREE.MeshPhongMaterial({color:0xffffff});//基础材质并不能接受阴影效果
+    var plane=new THREE.Mesh(planegeometry,planmaterial);
+    plane.rotation.x=-0.5*Math.PI;//plane这个面默认在xy平面上，现在旋转到xz平面上
+    plane.receiveShadow=true;//告诉平面去接收阴影效果
+    scene.add(plane);
+
+    //创建一个正方体(lambt材质漫反射)和一个圆（phong材质镜反射）
+    var boxgeometry=new THREE.BoxGeometry(2,2,2,1,1,1);
+    var shapgeometry=new THREE.SphereGeometry(2,18,18);
+    var boxmaterial=new THREE.MeshLambertMaterial({color:0x1E90FF});
+    var shapmaterial=new THREE.MeshPhongMaterial({color:0xFF00FF});
+    var boxmesh= new THREE.Mesh(boxgeometry,boxmaterial);
+    var shapmesh=new THREE.Mesh(shapgeometry,shapmaterial);
+    boxmesh.position.set(-2,3,0);
+    shapmesh.position.set(3,3,0);
+    boxmesh.castShadow=true;//告诉物品要开启阴影效果
+    shapmesh.castShadow=true;//告诉物品要开启阴影效果
+    scene.add(boxmesh);
+    scene.add(shapmesh);
+
+    //创建平行光
+    var directlight=new THREE.DirectionalLight(0xffffff,2);
+    directlight.position.set(5,5,-5);
+    directlight.castShadow=true;
+    directlight.shadowCameraNear=1;
+    directlight.shadowCameraFar=100;
+    directlight.shadowCameraRight=-12;
+    directlight.shadowCameraLeft=12;
+    directlight.shadowCameraTop=10;
+    directlight.shadowCameraBottom=-20;
+    directlight.shadow.mapSize.width = 1024;
+    directlight.shadow.mapSize.height = 1024;
+    directlight.target=plane;
+    scene.add(directlight);
+
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.shadowMap.enabled=true;//告诉浏览器需要阴影效果
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;//开启这个阴影效果更好
+    document.body.appendChild(renderer.domElement);
+    renderer.render(scene,camera);
+
+    window.addEventListener('resize',onResize,false);//注册一个窗口监听事件
+    function onResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();//如果不写就会发生相机观看物体变形的事情
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+</script>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>spotlight聚光灯效果</title>
+    <style>
+        body{
+            margin:0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script type="text/javascript" src="../../js/three.js"></script>
+<script type="text/javascript">
+    var scene=new THREE.Scene();
+    var camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,1,1000);
+    camera.position.set(0,50,5);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);
+
+    //帮助显示世界坐标系
+    var axishelp=new THREE.AxisHelper(3);
+    scene.add(axishelp);
+
+    //创建一个plan去接收阴影
+    var planegeometry=new THREE.PlaneGeometry(50,50);
+    var planematerial=new THREE.MeshLambertMaterial({color:0x8F8FF});
+    var plane=new THREE.Mesh(planegeometry,planematerial);
+    plane.rotation.x=-0.5*Math.PI;//原本平面是xy平面，这步是让平面在xz平面上
+    plane.receiveShadow=true;//告诉平面要去接受阴影效果
+    scene.add(plane);
+
+    //创建物体图形
+    var shapgeometry=new THREE.SphereGeometry(2,36,36);
+    var shapmaterial=new THREE.MeshPhongMaterial({color:0xFF00FF});
+    var shapmesh=new THREE.Mesh(shapgeometry,shapmaterial);
+    shapmesh.position.set(0,3,0);
+    shapmesh.castShadow=true;//告诉物品要开启阴影效果
+    scene.add(shapmesh);
+
+    //创建聚光灯
+    var spotlight=new THREE.SpotLight(0xffffff);
+    spotlight.position.set(5,5,-5);
+    spotlight.angle=Math.PI/6;//调整聚光灯的角度
+    spotlight.castShadow=true;//告诉聚光灯要开启阴影效果
+    spotlight.shadow.mapSize.width = 1024;
+    spotlight.shadow.mapSize.height = 1024;
+    scene.add(spotlight);
+
+
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.shadowMap.enabled=true;//告诉浏览器需要阴影效果
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;//开启这个阴影效果更好
+    document.body.appendChild(renderer.domElement);
+    renderer.render(scene,camera);
+
+    window.addEventListener('resize',onResize,false);//注册一个窗口监听事件
+    function onResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();//如果不写就会发生相机观看物体变形的事情
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+</script>
+</html>
